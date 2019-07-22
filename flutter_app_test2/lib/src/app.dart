@@ -42,6 +42,7 @@ class AppState extends State<App>{
 
     return MaterialApp(
         home: Scaffold(
+                  backgroundColor: Colors.black,
                   body: ImageList(images),
                   floatingActionButton: FloatingActionButton(
                       child: Icon(Icons.add,
@@ -50,10 +51,16 @@ class AppState extends State<App>{
                       onPressed: fetchImage //Reference to the function.
                   ),
                   appBar: AppBar(
+                      centerTitle: true ,
                       backgroundColor: Colors.redAccent,
-                      title: Text('Generate Images!',style: TextStyle(color: Colors.black))
-                  )
-              )
+                      title: Text('Generate Images!',
+                             style: TextStyle(
+                                 color: Colors.white70,
+                                 fontSize: 25,
+                               )
+                      ),
+                  ),
+              ),
     );
   }
 
