@@ -3,7 +3,7 @@ import '../models/image_model.dart';
 
 //The class is Stateless as it doesn't change its members from within
 class ImageList extends StatelessWidget{
-    List<ImageModel> images = [];
+    final List<ImageModel> images = [];
     ImageList(this.images);
 
     Widget build(context){
