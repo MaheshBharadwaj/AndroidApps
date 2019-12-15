@@ -36,12 +36,21 @@ class LoginScreenState extends State<LoginScreen>{
           color: Colors.white70,
           fontSize: 20.0,
         ),
-        labelText: 'Enter Password',
-        labelStyle: TextStyle(
-          color: Colors.black,
-          fontSize: 20.0,
+      labelText: 'Enter Password',
+      labelStyle: TextStyle(
+        color: Colors.black,
+        fontSize: 20.0,
         ),
       ),
+    );
+  }
+
+  Widget submitButton(){
+    return RaisedButton(
+      child: Text('Submit!'),
+      onPressed: (){
+        print('Hello!\n');
+      },
     );
   }
 
@@ -55,7 +64,8 @@ class LoginScreenState extends State<LoginScreen>{
             emailField(),
             Padding(padding: EdgeInsets.only(bottom:7.5)),
             passField(),
-            //submitButton(),
+            Padding(padding: EdgeInsets.only(bottom:7.5)),
+            submitButton(),
           ],
           ),
       ),
