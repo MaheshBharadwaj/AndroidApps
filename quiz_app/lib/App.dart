@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget{
+    @override
     Widget build(BuildContext ctx){
         return MaterialApp(
           home: Scaffold(
@@ -10,7 +11,10 @@ class MyApp extends StatelessWidget{
               backgroundColor: Colors.redAccent,
             ),
             backgroundColor: Colors.black,
-
+            body: Text('Text in the body',
+                       textAlign: TextAlign.center,
+                       style: TextStyle(color: Colors.white70,fontSize: 22)
+            )
           ),
         );
     }
