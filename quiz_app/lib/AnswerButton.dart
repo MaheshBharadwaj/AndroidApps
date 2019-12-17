@@ -9,7 +9,7 @@ class AnswerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(bottom: 5.0),
+      margin: EdgeInsets.only(top: 2.5, bottom: 2.5),
       child: RaisedButton(
         child: Text(
           _bText,

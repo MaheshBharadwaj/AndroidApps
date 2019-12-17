@@ -10,12 +10,25 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  var _questions = ['What\'s your fav color?', 'What\'s your fav animal?'];
+  var _questions = [
+    {
+      'question': 'What\'s your favourite color?',
+      'choices': <String>['Red', 'Orange', 'Blue', 'Green']
+    },
+    {
+      'question': 'What\'s your favourite city?',
+      'choices': <String>['Chennai', 'Delhi', 'Goa', 'Bangalore']
+    },
+    {
+      'question': 'What\'s your favourite Food?',
+      'choices': <String>['Pizza', 'Pasta', 'Noodles', 'Burger']
+    },
+  ];
   var _index = 0;
 
   void _buttonClicked() {
     setState(() {
-      _index = (_index + 1) % 2;
+      _index = (_index + 1) % 3;
     });
     print('Button Clicked!');
   }
@@ -41,10 +54,20 @@ class MyAppState extends State<MyApp> {
           margin: EdgeInsets.all(10.0),
           child: Column(
             children: <Widget>[
-              Question(_questions[_index]),
-              AnswerButton('Answer 1', _buttonClicked),
-              AnswerButton('Answer 2', _buttonClicked),
-              AnswerButton('Answer 3', _buttonClicked),
+              Question(_questions[_index]['question']),
+
+              ...(_questions[_index]['choices'] as List<String>).map((choice) {
+                return AnswerButton(choice, _buttonClicked);
+              }).toList(),
+
+              RaisedButton(
+                child: Icon(
+                  Icons.save,
+                  size: 30.0,
+                ),
+                onPressed: () {},
+                color: Colors.grey,
+              ),
             ],
           ),
         ),
