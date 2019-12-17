@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'Question.dart';
+import 'AnswerButton.dart';
 
 class MyApp extends StatefulWidget {
   State<StatefulWidget> createState() {
@@ -11,7 +13,7 @@ class MyAppState extends State<MyApp> {
   var _questions = ['What\'s your fav color?', 'What\'s your fav animal?'];
   var _index = 0;
 
-  void buttonClicked() {
+  void _buttonClicked() {
     setState(() {
       _index = (_index + 1) % 2;
     });
@@ -36,41 +38,15 @@ class MyAppState extends State<MyApp> {
         ),
         backgroundColor: Colors.black,
         body: Container(
+          margin: EdgeInsets.all(10.0),
           child: Column(
             children: <Widget>[
-              Question(
-                _questions[_index],
-              ),
-              RaisedButton(
-                color: Colors.blueAccent,
-                child: Text(
-                  'Question 1',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70, fontSize: 15.0),
-                ),
-                onPressed: buttonClicked,
-              ),
-              RaisedButton(
-                color: Colors.blueAccent,
-                child: Text(
-                  'Question 2',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70, fontSize: 15.0),
-                ),
-                onPressed: buttonClicked,
-              ),
-              RaisedButton(
-                color: Colors.blueAccent,
-                child: Text(
-                  'Question 3',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70, fontSize: 15.0),
-                ),
-                onPressed: buttonClicked,
-              ),
+              Question(_questions[_index]),
+              AnswerButton('Answer 1', _buttonClicked),
+              AnswerButton('Answer 2', _buttonClicked),
+              AnswerButton('Answer 3', _buttonClicked),
             ],
           ),
-          padding: EdgeInsets.all(10.0),
         ),
       ),
     );
