@@ -14,21 +14,38 @@ class MyAppState extends State<MyApp> {
   var _questions = [
     {
       'question': 'What\'s your favourite color?',
-      'choices': <String>['Red', 'Orange', 'Blue', 'Green']
+      'choices': <Map<String, Object>>[
+        {'text': 'Red', 'score': 10},
+        {'text': 'Orange', 'score': 7},
+        {'text': 'Yellow', 'score': 5},
+        {'text': 'Green', 'score': 2},
+      ]
     },
     {
       'question': 'What\'s your favourite city?',
-      'choices': <String>['Chennai', 'Delhi', 'Goa', 'Bangalore']
+      'choices': <Map<String, Object>>[
+        {'text': 'Chennai', 'score': 15},
+        {'text': 'Delhi', 'score': 10},
+        {'text': 'Bangalore', 'score': 7},
+        {'text': 'Mumbai', 'score': 5},
+      ]
     },
     {
       'question': 'What\'s your favourite Food?',
-      'choices': <String>['Pizza', 'Pasta', 'Noodles', 'Burger']
+      'choices': <Map<String, Object>>[
+        {'text': 'Pizza', 'score': 25},
+        {'text': 'Burger', 'score': 20},
+        {'text': 'Pasta', 'score': 15},
+        {'text': 'Pancakes', 'score': 10},
+      ]
     },
   ];
   var _index = 0;
+  var _totalScore = 0;
 
-  void _buttonClicked() {
+  void _buttonClicked(int score) {
     setState(() {
+      _totalScore += score;
       _index = (_index + 1);
     });
     print('Button Clicked!');
@@ -60,7 +77,7 @@ class MyAppState extends State<MyApp> {
                   _index,
                   _buttonClicked,
                 )
-              : ResultWidget()),
+              : ResultWidget(_totalScore)),
         ),
       ),
     );

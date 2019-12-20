@@ -15,8 +15,8 @@ class QuizWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         Question(_questions[_index]['question']),
-        ...(_questions[_index]['choices'] as List<String>).map((choice) {
-          return AnswerButton(choice, _fAction);
+        ...(_questions[_index]['choices'] as List< Map <String,Object>>).map((choice) {
+          return AnswerButton(choice['text'], () =>_fAction(choice['score']));
         }).toList(),
         RaisedButton(
           child: Icon(
