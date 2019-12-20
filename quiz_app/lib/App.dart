@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/Quiz.dart';
 
-import 'Question.dart';
-import 'AnswerButton.dart';
+import 'Quiz.dart';
+import 'Result.dart';
 
 class MyApp extends StatefulWidget {
   State<StatefulWidget> createState() {
@@ -28,7 +29,7 @@ class MyAppState extends State<MyApp> {
 
   void _buttonClicked() {
     setState(() {
-      _index = (_index + 1) % 3;
+      _index = (_index + 1);
     });
     print('Button Clicked!');
   }
@@ -39,7 +40,7 @@ class MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            "My First APP",
+            'Quiz App!',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white70,
@@ -51,25 +52,15 @@ class MyAppState extends State<MyApp> {
         ),
         backgroundColor: Colors.black,
         body: Container(
+          width: double.infinity,
           margin: EdgeInsets.all(10.0),
-          child: Column(
-            children: <Widget>[
-              Question(_questions[_index]['question']),
-
-              ...(_questions[_index]['choices'] as List<String>).map((choice) {
-                return AnswerButton(choice, _buttonClicked);
-              }).toList(),
-
-              RaisedButton(
-                child: Icon(
-                  Icons.save,
-                  size: 30.0,
-                ),
-                onPressed: () {},
-                color: Colors.grey,
-              ),
-            ],
-          ),
+          child: (_index < _questions.length
+              ? QuizWidget(
+                  _questions,
+                  _index,
+                  _buttonClicked,
+                )
+              : ResultWidget()),
         ),
       ),
     );
