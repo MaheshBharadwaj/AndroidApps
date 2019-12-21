@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/Quiz.dart';
 
 import 'Quiz.dart';
 import 'Result.dart';
@@ -43,6 +42,13 @@ class MyAppState extends State<MyApp> {
   var _index = 0;
   var _totalScore = 0;
 
+  void _reset(){
+    setState(() {
+      _totalScore = 0;
+      _index = 0;
+    });
+  }
+
   void _buttonClicked(int score) {
     setState(() {
       _totalScore += score;
@@ -56,7 +62,7 @@ class MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text(
+            title: Text(
             'Quiz App!',
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -77,7 +83,7 @@ class MyAppState extends State<MyApp> {
                   _index,
                   _buttonClicked,
                 )
-              : ResultWidget(_totalScore)),
+              : ResultWidget(_totalScore,_reset)),
         ),
       ),
     );

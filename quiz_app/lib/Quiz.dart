@@ -18,14 +18,6 @@ class QuizWidget extends StatelessWidget {
         ...(_questions[_index]['choices'] as List< Map <String,Object>>).map((choice) {
           return AnswerButton(choice['text'], () =>_fAction(choice['score']));
         }).toList(),
-        RaisedButton(
-          child: Icon(
-            Icons.save,
-            size: 30.0,
-          ),
-          onPressed: () {},
-          color: Colors.grey,
-        ),
       ],
     );
   }
