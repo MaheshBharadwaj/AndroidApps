@@ -71,7 +71,7 @@ class MyAppState extends State<MyApp> {
             ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Colors.red,
         ),
         backgroundColor: Colors.black,
         body: Container(
