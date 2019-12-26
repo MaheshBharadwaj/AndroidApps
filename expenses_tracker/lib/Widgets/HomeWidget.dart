@@ -10,7 +10,7 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  
+  /*
   List<Transaction> _transactionList = [
     Transaction(
       title: 'Shoes',
@@ -25,7 +25,8 @@ class _HomeWidgetState extends State<HomeWidget> {
       date: DateTime.now(),
     ),
   ];
-
+  */
+  List<Transaction> _transactionList = [];
 
   void _showAddModalSheet(BuildContext context) {
     showModalBottomSheet(
@@ -55,7 +56,6 @@ class _HomeWidgetState extends State<HomeWidget> {
     Navigator.of(context).pop();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +84,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         child: Container(
           child: Column(
             children: <Widget>[
-              Container(
+              /*Container(
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(vertical: 10.0),
                 child: Card(
@@ -96,7 +96,16 @@ class _HomeWidgetState extends State<HomeWidget> {
                   ),
                 ),
               ),
-              TransactionList(_transactionList),
+              */
+              (_transactionList.isEmpty)
+                  ? Container(
+                      height: 300.0,
+                      child: Image.asset(
+                        'assets/images/waiting.png',
+                        fit: BoxFit.fill,
+                      ),
+                    )
+                  : TransactionList(_transactionList),
             ],
           ),
         ),
@@ -115,5 +124,4 @@ class _HomeWidgetState extends State<HomeWidget> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
-
 }
