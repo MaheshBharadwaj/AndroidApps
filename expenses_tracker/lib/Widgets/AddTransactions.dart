@@ -17,7 +17,7 @@ class _AddTransactionsState extends State<AddTransactions> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white10,
+        color: Theme.of(context).accentColor,
         borderRadius: BorderRadius.circular(10.0),
       ),
       padding: EdgeInsets.all(10.0),
@@ -32,11 +32,7 @@ class _AddTransactionsState extends State<AddTransactions> {
             ),
             decoration: InputDecoration(
               labelText: 'Title',
-              labelStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
+              labelStyle: Theme.of(context).primaryTextTheme.caption,
             ),
           ),
           TextField(
@@ -49,26 +45,20 @@ class _AddTransactionsState extends State<AddTransactions> {
             ),
             decoration: InputDecoration(
               labelText: 'Amount',
-              labelStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
+              labelStyle: Theme.of(context).primaryTextTheme.caption,
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 5.0),
           ),
           RaisedButton(
-            padding: EdgeInsets.all(10.0),
             color: Colors.white10,
+            padding: EdgeInsets.all(10.0),
             onPressed: () => widget._addButtonHandler(
                 _titleController.text, _amountController.text),
             child: Text(
               'Add Transaction',
-              style: TextStyle(
-                color: Colors.white70,
-              ),
+              style: Theme.of(context).primaryTextTheme.button,
             ),
           )
         ],

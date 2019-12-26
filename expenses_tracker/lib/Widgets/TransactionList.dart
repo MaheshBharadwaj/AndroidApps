@@ -8,6 +8,7 @@ class TransactionList extends StatelessWidget {
 
   TransactionList(this._transactionList);
 
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,7 +17,7 @@ class TransactionList extends StatelessWidget {
         itemCount: (10 < _transactionList.length) ? 10: _transactionList.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
-            color: Colors.white10,
+            color: Theme.of(context).accentColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -53,19 +54,11 @@ class TransactionList extends StatelessWidget {
                       Text(
                         _transactionList[index].title,
                         textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white70,
-                        ),
+                        style: Theme.of(context).primaryTextTheme.title,
                       ),
                       Text(
                         DateFormat.yMMMd().format(_transactionList[index].date),
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).primaryTextTheme.body2,
                       ),
                     ],
                   ),

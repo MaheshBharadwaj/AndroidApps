@@ -64,20 +64,22 @@ class _HomeWidgetState extends State<HomeWidget> {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () => _showAddModalSheet(context),
-            iconSize: 30.0,
+            iconSize: 35.0,
           )
         ],
         centerTitle: true,
         backgroundColor: Colors.red,
         title: Text(
           'Expenses App!',
+          /*
           style: TextStyle(
             color: Colors.white,
             fontSize: 25.0,
           ),
+          */
         ),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).primaryColor,
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -102,6 +104,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.add,
+          color: Colors.white,
           size: 35.0,
         ),
         onPressed: () {
