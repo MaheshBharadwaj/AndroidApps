@@ -52,7 +52,7 @@ class _AddTransactionsState extends State<AddTransactions> {
             padding: EdgeInsets.symmetric(vertical: 5.0),
           ),
           RaisedButton(
-            color: Colors.white10,
+            color: Theme.of(context).accentColor,
             padding: EdgeInsets.all(10.0),
             onPressed: () => widget._addButtonHandler(
                 _titleController.text, _amountController.text),

@@ -30,15 +30,16 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   void _showAddModalSheet(BuildContext context) {
     showModalBottomSheet(
-        backgroundColor: Colors.black,
-        context: context,
-        builder: (BuildContext _) {
-          return GestureDetector(
-            onTap: () {},
-            child: AddTransactions(_buttonHandler),
-            behavior: HitTestBehavior.opaque,
-          );
-        });
+      backgroundColor: Colors.black,
+      context: context,
+      builder: (BuildContext _) {
+        return GestureDetector(
+          onTap: () {},
+          child: AddTransactions(_buttonHandler),
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
   }
 
   void _buttonHandler(String title, String amount) {
@@ -53,6 +54,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       ));
     });
 
+    //Close the modal sheets
     Navigator.of(context).pop();
   }
 
@@ -71,12 +73,6 @@ class _HomeWidgetState extends State<HomeWidget> {
         backgroundColor: Colors.red,
         title: Text(
           'Expenses App!',
-          /*
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 25.0,
-          ),
-          */
         ),
       ),
       backgroundColor: Theme.of(context).primaryColor,
@@ -85,25 +81,36 @@ class _HomeWidgetState extends State<HomeWidget> {
           child: Column(
             children: <Widget>[
               /*Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 10.0),
-                child: Card(
-                  color: Colors.blue,
-                  child: Text(
-                    'CHART',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 25.0),
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(vertical: 10.0),
+                  child: Card(
+                    color: Colors.blue,
+                    child: Text(
+                      'CHART',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 25.0),
+                    ),
                   ),
                 ),
-              ),
-              */
+                */
               (_transactionList.isEmpty)
-                  ? Container(
-                      height: 300.0,
-                      child: Image.asset(
-                        'assets/images/waiting.png',
-                        fit: BoxFit.fill,
-                      ),
+                  ? Column(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(10.0),
+                          height: MediaQuery.of(context).size.height - 100,
+                          child: Center(
+                            child: Image.asset(
+                              'assets/images/waiting.png',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'No Transactions to Show',
+                          style: Theme.of(context).primaryTextTheme.body1,
+                        ),
+                      ],
                     )
                   : TransactionList(_transactionList),
             ],
@@ -111,6 +118,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        elevation: 5.0,
         child: Icon(
           Icons.add,
           color: Colors.white,
@@ -121,7 +129,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         },
         backgroundColor: Colors.green,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
