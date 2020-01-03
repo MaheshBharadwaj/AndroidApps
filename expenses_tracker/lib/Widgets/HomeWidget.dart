@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'TransactionList.dart';
 import 'AddTransactions.dart';
+import 'Chart.dart';
 import '../Models/Transaction.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -27,6 +28,16 @@ class _HomeWidgetState extends State<HomeWidget> {
   ];
   */
   List<Transaction> _transactionList = [];
+
+  List<Transaction> get _recentTransactionsList {
+    return _transactionList.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
   void _showAddModalSheet(BuildContext context) {
     showModalBottomSheet(
@@ -93,6 +104,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   ),
                 ),
                 */
+                Chart(_recentTransactionsList),
               (_transactionList.isEmpty)
                   ? Column(
                       children: <Widget>[
