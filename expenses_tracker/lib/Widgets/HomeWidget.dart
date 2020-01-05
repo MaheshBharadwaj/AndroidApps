@@ -77,15 +77,18 @@ class _HomeWidgetState extends State<HomeWidget> {
     Navigator.of(context).pop();
   }
 
-  void _addHandler(String title, String amount) {
-     Navigator.of(context).pop();
+  void _addHandler(String title, String amount,DateTime date) {
+    if(date == null)
+      return;
+
+    Navigator.of(context).pop();
 
     if (title == '' || amount == '') return;
 
     setState(() {
       _transactionList.add(Transaction(
         amount: double.parse(amount),
-        date: DateTime.now(),
+        date: date,
         id: 'T${_transactionList.length}',
         title: title,
       ));
@@ -126,7 +129,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.all(10.0),
-                          height: MediaQuery.of(context).size.height - 200,
+                          height: MediaQuery.of(context).size.height - 300,
                           child: Center(
                             child: Image.asset(
                               'assets/images/waiting.png',

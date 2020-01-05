@@ -23,7 +23,7 @@ class Chart extends StatelessWidget {
           total += _recentTransactionsList[i].amount;
 
       return {'day': DateFormat.E().format(weekDay), 'amount': total};
-    });
+    }).reversed.toList();
   }
 
   double get totalSpending {

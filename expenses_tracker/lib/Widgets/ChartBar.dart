@@ -9,18 +9,21 @@ class ChartBar extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5.0),
+          padding: EdgeInsets.all(5.0),
       child: Column(
         children: <Widget>[
-          Text(
-            '$_amount',
-            style: TextStyle(color: Colors.white, fontSize: 15.0),
+          Container(
+            height: 20,
+            child: Text(
+              '$_amount',
+              style: TextStyle(color: Colors.white, fontSize: 15.0),
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 5.0),
           ),
           Container(
-            height: 60.0,
+            height: 75.0,
             width: 10.0,
             child: Stack(
               children: <Widget>[
