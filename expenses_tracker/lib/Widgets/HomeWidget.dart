@@ -13,8 +13,6 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-
-
   /*
   List<Transaction> _transactionList = [
     Transaction(
@@ -111,7 +109,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         centerTitle: true,
         backgroundColor: Colors.red,
         title: Text(
-          'Expenses App!',
+          'Expenses Tracker!',
         ),
       ),
       backgroundColor: Theme.of(context).primaryColor,

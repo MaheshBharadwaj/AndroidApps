@@ -97,7 +97,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                         _pickedDate,
                       )),
               IconButton(
-                onPressed: () => widget._addButtonHandler('', '', null),
+                onPressed: () => widget._addButtonHandler('', '',DateTime.now()),
                 color: Colors.red,
                 icon: Icon(
                   Icons.close,
