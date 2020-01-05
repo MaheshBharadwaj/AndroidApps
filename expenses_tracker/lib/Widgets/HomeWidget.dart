@@ -7,13 +7,14 @@ import 'DeleteTransaction.dart';
 
 import '../Models/Transaction.dart';
 
-
 class HomeWidget extends StatefulWidget {
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+
+
   /*
   List<Transaction> _transactionList = [
     Transaction(
@@ -42,7 +43,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     }).toList();
   }
 
-  void _showDeleteModalSheet(BuildContext context,int index) {
+  void _showDeleteModalSheet(BuildContext context, int index) {
     showModalBottomSheet(
         backgroundColor: Colors.black,
         context: context,
@@ -50,7 +51,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           return GestureDetector(
             onTap: () {},
             behavior: HitTestBehavior.opaque,
-            child: DeleteTransaction(_deleteHandler,index),
+            child: DeleteTransaction(_deleteHandler, index),
           );
         });
   }
@@ -77,9 +78,8 @@ class _HomeWidgetState extends State<HomeWidget> {
     Navigator.of(context).pop();
   }
 
-  void _addHandler(String title, String amount,DateTime date) {
-    if(date == null)
-      return;
+  void _addHandler(String title, String amount, DateTime date) {
+    if (date == null) return;
 
     Navigator.of(context).pop();
 
@@ -95,7 +95,6 @@ class _HomeWidgetState extends State<HomeWidget> {
     });
 
     //Close the modal sheets
-   
   }
 
   @override
@@ -143,7 +142,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                       ],
                     )
-                  : TransactionList(_transactionList,_showDeleteModalSheet),
+                  : TransactionList(_transactionList, _showDeleteModalSheet),
             ],
           ),
         ),
