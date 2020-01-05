@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'TransactionList.dart';
 import 'AddTransactions.dart';
 import 'Chart.dart';
+import 'DeleteTransaction.dart';
+
 import '../Models/Transaction.dart';
+
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -39,6 +42,19 @@ class _HomeWidgetState extends State<HomeWidget> {
     }).toList();
   }
 
+  void _showDeleteModalSheet(BuildContext context,int index) {
+    showModalBottomSheet(
+        backgroundColor: Colors.black,
+        context: context,
+        builder: (BuildContext _) {
+          return GestureDetector(
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+            child: DeleteTransaction(_deleteHandler,index),
+          );
+        });
+  }
+
   void _showAddModalSheet(BuildContext context) {
     showModalBottomSheet(
       backgroundColor: Colors.black,
@@ -46,14 +62,24 @@ class _HomeWidgetState extends State<HomeWidget> {
       builder: (BuildContext _) {
         return GestureDetector(
           onTap: () {},
-          child: AddTransactions(_buttonHandler),
+          child: AddTransactions(_addHandler),
           behavior: HitTestBehavior.opaque,
         );
       },
     );
   }
 
-  void _buttonHandler(String title, String amount) {
+  void _deleteHandler(int index) {
+    if (index != -1)
+      setState(() {
+        _transactionList.removeAt(index);
+      });
+    Navigator.of(context).pop();
+  }
+
+  void _addHandler(String title, String amount) {
+     Navigator.of(context).pop();
+
     if (title == '' || amount == '') return;
 
     setState(() {
@@ -66,7 +92,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     });
 
     //Close the modal sheets
-    Navigator.of(context).pop();
+   
   }
 
   @override
@@ -91,26 +117,16 @@ class _HomeWidgetState extends State<HomeWidget> {
         child: Container(
           child: Column(
             children: <Widget>[
-              /*Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                  child: Card(
-                    color: Colors.blue,
-                    child: Text(
-                      'CHART',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 25.0),
-                    ),
-                  ),
-                ),
-                */
-                Chart(_recentTransactionsList),
+              Chart(_recentTransactionsList),
+              Padding(
+                padding: EdgeInsets.only(bottom: 5.0),
+              ),
               (_transactionList.isEmpty)
                   ? Column(
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.all(10.0),
-                          height: MediaQuery.of(context).size.height - 100,
+                          height: MediaQuery.of(context).size.height - 200,
                           child: Center(
                             child: Image.asset(
                               'assets/images/waiting.png',
@@ -124,7 +140,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                       ],
                     )
-                  : TransactionList(_transactionList),
+                  : TransactionList(_transactionList,_showDeleteModalSheet),
             ],
           ),
         ),

@@ -36,8 +36,7 @@ class _AddTransactionsState extends State<AddTransactions> {
             ),
           ),
           TextField(
-            onSubmitted: (_) => widget._addButtonHandler(
-                _titleController.text, _amountController.text),
+            onSubmitted: (_){},
             keyboardType: TextInputType.number,
             controller: _amountController,
             style: TextStyle(
@@ -51,15 +50,39 @@ class _AddTransactionsState extends State<AddTransactions> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 5.0),
           ),
-          RaisedButton(
-            color: Theme.of(context).accentColor,
-            padding: EdgeInsets.all(10.0),
-            onPressed: () => widget._addButtonHandler(
-                _titleController.text, _amountController.text),
-            child: Text(
-              'Add Transaction',
-              style: Theme.of(context).primaryTextTheme.button,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(
+                color: Colors.green,
+                icon: Icon(
+                  Icons.check,
+                  size: 30.0,
+                ),
+                onPressed: () => widget._addButtonHandler(
+                    _titleController.text, _amountController.text),
+              ),
+              IconButton(
+                onPressed: () => widget._addButtonHandler('', ''),
+                color: Colors.red,
+                icon: Icon(
+                  Icons.close,
+                  size: 30.0,
+                ),
+              ),
+              /*
+              RaisedButton(
+                color: Colors.green,
+                padding: EdgeInsets.all(10.0),
+                onPressed: () => widget._addButtonHandler(
+                    _titleController.text, _amountController.text),
+                child: Text(
+                  'Add Transaction',
+                  style: Theme.of(context).primaryTextTheme.button,
+                ),
+              ),
+              */
+            ],
           )
         ],
       ),
