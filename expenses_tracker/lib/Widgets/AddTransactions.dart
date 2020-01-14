@@ -20,7 +20,7 @@ class _AddTransactionsState extends State<AddTransactions> {
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2019),
+      firstDate: DateTime.now().subtract(Duration(days: 365)),
       lastDate: DateTime.now(),
     ).then((pickedDate) {
       if (pickedDate == null) return;
@@ -97,7 +97,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                         _pickedDate,
                       )),
               IconButton(
-                onPressed: () => widget._addButtonHandler('', '',DateTime.now()),
+                onPressed: () => Navigator.of(context).pop(),
                 color: Colors.red,
                 icon: Icon(
                   Icons.close,

@@ -97,52 +97,65 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _showAddModalSheet(context),
-            iconSize: 35.0,
-          )
-        ],
-        centerTitle: true,
-        backgroundColor: Colors.red,
-        title: Text(
-          'Expenses Tracker!',
-        ),
+    final appBar = AppBar(
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _showAddModalSheet(context),
+          iconSize: 35.0,
+        )
+      ],
+      centerTitle: true,
+      backgroundColor: Colors.red,
+      title: Text(
+        'Expenses Tracker!',
       ),
+    );
+
+    return Scaffold(
+      appBar: appBar,
       backgroundColor: Theme.of(context).primaryColor,
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Chart(_recentTransactionsList),
-              Padding(
-                padding: EdgeInsets.only(bottom: 5.0),
-              ),
-              (_transactionList.isEmpty)
-                  ? Column(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          height: MediaQuery.of(context).size.height - 300,
-                          child: Center(
-                            child: Image.asset(
-                              'assets/images/waiting.png',
-                              fit: BoxFit.fill,
-                            ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.vertical) *
+                  0.25,
+              child: Chart(_recentTransactionsList),
+            ),
+            (_transactionList.isEmpty)
+                ? Column(
+                    children: <Widget>[
+                      Container(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.vertical) *
+                            0.65,
+                        padding: EdgeInsets.all(10.0),
+                        child: Center(
+                          child: Image.asset(
+                            'assets/images/waiting.png',
+                            fit: BoxFit.contain,
                           ),
                         ),
-                        Text(
-                          'No Transactions to Show',
-                          style: Theme.of(context).primaryTextTheme.body1,
-                        ),
-                      ],
-                    )
-                  : TransactionList(_transactionList, _showDeleteModalSheet),
-            ],
-          ),
+                      ),
+                      Text(
+                        'No Transactions to Show',
+                        style: Theme.of(context).primaryTextTheme.body1,
+                      ),
+                    ],
+                  )
+                : Container(
+                    height: (MediaQuery.of(context).size.height -
+                            appBar.preferredSize.height -
+                            MediaQuery.of(context).padding.vertical) *
+                        0.75,
+                    child: TransactionList(
+                        _transactionList, _showDeleteModalSheet),
+                  ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

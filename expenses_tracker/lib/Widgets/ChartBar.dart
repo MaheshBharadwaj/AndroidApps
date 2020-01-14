@@ -9,7 +9,7 @@ class ChartBar extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-          padding: EdgeInsets.all(5.0),
+      padding: EdgeInsets.all(5.0),
       child: Column(
         children: <Widget>[
           Container(
