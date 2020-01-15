@@ -92,6 +92,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                     size: 30.0,
                   ),
                   onPressed: () => widget._addButtonHandler(
+                        context,
                         _titleController.text,
                         _amountController.text,
                         _pickedDate,

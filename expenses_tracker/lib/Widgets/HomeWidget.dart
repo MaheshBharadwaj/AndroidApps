@@ -17,6 +17,7 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
   List<MyTransaction> _transactionList = [];
+  List<MyTransaction> _recentTransactionsList = [];
 
   Future<Database> getDatabase(String path) async {
     Database db =
@@ -26,7 +27,19 @@ class _HomeWidgetState extends State<HomeWidget> {
             title TEXT,
             amount NUMBER,
             date_t DATE)''');
+    },
+    version: 1);
+    return db;
+  }
+
+  void loadTransaction(){
+    getTransactionsList().then((tList){
+      _transactionList = tList;
     });
+  }
+
+  void loadRecentTransaction(){
+    getRecentTransactionsList().then((rtList){_recentTransactionsList = rtList;});
   }
 
   Future<void> insertTransaction(final MyTransaction T) async {
@@ -72,17 +85,21 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
-  /*
-  List<MyTransaction>  get _recentTransactionsList{
-    return _transactionList.where((tx) {
+  
+  Future<List<MyTransaction>>  getRecentTransactionsList() async{
+    final tList = await getTransactionsList();
+    
+    _recentTransactionsList = tList.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
           Duration(days: 7),
         ),
       );
     }).toList();
+
+    return _recentTransactionsList;
   }
-  */
+  
 
   void _showDeleteModalSheet(BuildContext context, int index) {
     showModalBottomSheet(
@@ -110,12 +127,23 @@ class _HomeWidgetState extends State<HomeWidget> {
       },
     );
   }
-
+  /*
   void _deleteHandler(BuildContext context, int index) {
     if (index != -1)
       setState(() {
         _transactionList.removeAt(index);
       });
+    Navigator.of(context).pop();
+  }
+  */
+
+  void _deleteHandler(BuildContext context, int index) async {
+    if (index != -1){
+      await deleteTransaction(index);
+      setState(() {
+        _transactionList.removeAt(index);
+      });
+    }
     Navigator.of(context).pop();
   }
 
@@ -167,6 +195,8 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    //loadTransaction();
+    //loadRecentTransaction();
     final appBar = AppBar(
       actions: <Widget>[
         IconButton(
