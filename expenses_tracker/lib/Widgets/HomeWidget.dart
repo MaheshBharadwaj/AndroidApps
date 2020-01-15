@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 import 'TransactionList.dart';
 import 'AddTransactions.dart';
@@ -13,25 +16,79 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  /*
-  List<Transaction> _transactionList = [
-    Transaction(
-      title: 'Shoes',
-      amount: 2500.0,
-      id: 'T0',
-      date: DateTime.now(),
-    ),
-    Transaction(
-      title: 'Earphones',
-      amount: 1000.0,
-      id: 'T1',
-      date: DateTime.now(),
-    ),
-  ];
-  */
-  List<Transaction> _transactionList = [];
+  List<MyTransaction> _transactionList = [];
+  List<MyTransaction> _recentTransactionsList = [];
 
-  List<Transaction> get _recentTransactionsList {
+  _HomeWidgetState() {
+    loadTransactionsList().then((tList) {
+      setState(() {
+        _transactionList = tList;
+      });
+      loadRecentTransactionsList().then((rtList) {
+        _recentTransactionsList = rtList;
+        setState(() {
+          _recentTransactionsList = rtList;
+        });
+      });
+    });
+  }
+
+  Future<Database> getDatabase(String path) async {
+    Database db =
+        await openDatabase(path, onCreate: (Database db, int version) async {
+      await db.execute('''create table Transactions(
+            id TEXT PRIMARY KEY,
+            title TEXT,
+            amount TEXT,
+            date_t TEXT)''');
+    }, version: 1);
+    return db;
+  }
+
+  Future<void> insertTransaction(final MyTransaction T) async {
+    // Get a reference to the database.
+    final String path = join(await getDatabasesPath(), 'Transacitions.db');
+    final Database db = await getDatabase(path);
+
+    await db.insert(
+      'Transactions',
+      T.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<MyTransaction>> loadTransactionsList() async {
+    // Get a reference to the database.
+    final String path = join(await getDatabasesPath(), 'Transacitions.db');
+    final Database db = await getDatabase(path);
+
+    // Query the table for all The Dogs.
+    final List<Map<String, dynamic>> maps = await db.query('Transactions');
+
+    // Convert the List<Map<String, dynamic> into a List<Dog>.
+    return List.generate(maps.length, (i) {
+      return MyTransaction(
+          id: maps[i]['id'],
+          title: maps[i]['title'],
+          amount: double.parse(maps[i]['amount'] as String),
+          date: DateTime.fromMillisecondsSinceEpoch(
+              int.parse(maps[i]['date_t'] as String)));
+    });
+  }
+
+  Future<void> deleteTransaction(int id) async {
+    // Get a reference to the database.
+    final String path = join(await getDatabasesPath(), 'Transacitions.db');
+    final Database db = await getDatabase(path);
+
+    await db.delete(
+      'Transactions',
+      where: "id = ?",
+      whereArgs: ["${_transactionList[id].id}"],
+    );
+  }
+
+  Future<List<MyTransaction>> loadRecentTransactionsList() async {
     return _transactionList.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
@@ -68,34 +125,64 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
-  void _deleteAllHandler() {
-    setState(() {
-      _transactionList.removeRange(0,_transactionList.length);
-    });
-  }
-
-  void _deleteHandler(int index) {
-    if (index != -1)
-      setState(() {
-        _transactionList.removeAt(index);
+  void _deleteHandler(BuildContext context, int index) async {
+    if (index != -1) {
+    
+      await deleteTransaction(index);
+      loadTransactionsList().then((tList) {
+        setState(() {
+          _transactionList = tList;
+        });
+        loadRecentTransactionsList().then((rtList) {
+          _recentTransactionsList = rtList;
+          setState(() {
+            _recentTransactionsList = rtList;
+          });
+        });
       });
+    }
+    print(_transactionList.toString());
     Navigator.of(context).pop();
   }
 
-  void _addHandler(String title, String amount, DateTime date) {
+  Future<void> _deleteAllHandler() async {
+    final String path = join(await getDatabasesPath(), 'Transacitions.db');
+    final Database db = await getDatabase(path);
+    await db.delete('Transactions');
+
+    setState(() {
+      loadTransactionsList().then((tList) {
+        _transactionList = tList;
+        loadRecentTransactionsList().then((rtList) {
+          _recentTransactionsList = rtList;
+        });
+      });
+    });
+  }
+
+  void _addHandler(
+      BuildContext context, String title, String amount, DateTime date) async {
     if (date == null) return;
 
     Navigator.of(context).pop();
 
     if (title == '' || amount == '') return;
-
-    setState(() {
-      _transactionList.add(Transaction(
-        amount: double.parse(amount),
-        date: date,
-        id: 'T${_transactionList.length}',
-        title: title,
-      ));
+    await insertTransaction(MyTransaction(
+      amount: double.parse(amount),
+      date: date,
+      id: '${_transactionList.length}',
+      title: title,
+    ));
+    loadTransactionsList().then((tList) {
+      setState(() {
+        _transactionList = tList;
+      });
+      loadRecentTransactionsList().then((rtList) {
+        _recentTransactionsList = rtList;
+        setState(() {
+          _recentTransactionsList = rtList;
+        });
+      });
     });
 
     //Close the modal sheets
@@ -107,11 +194,11 @@ class _HomeWidgetState extends State<HomeWidget> {
       actions: <Widget>[
         IconButton(
           icon: Icon(
-            Icons.refresh,
-            size: 30,
+            Icons.clear,
             color: Colors.white,
           ),
           onPressed: () => _deleteAllHandler(),
+          iconSize: 35.0,
         )
       ],
       centerTitle: true,
@@ -131,7 +218,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.vertical) *
-                  0.25,
+                  0.27,
               child: Chart(_recentTransactionsList),
             ),
             (_transactionList.isEmpty)
@@ -160,7 +247,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     height: (MediaQuery.of(context).size.height -
                             appBar.preferredSize.height -
                             MediaQuery.of(context).padding.vertical) *
-                        0.75,
+                        0.73,
                     child: TransactionList(
                         _transactionList, _showDeleteModalSheet),
                   ),

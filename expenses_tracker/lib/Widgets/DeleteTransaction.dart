@@ -33,7 +33,7 @@ class DeleteTransaction extends StatelessWidget {
                   Icons.delete,
                   size: 30.0,
                 ),
-                onPressed: () => _deleteHandler(_index),
+                onPressed: () => _deleteHandler(context,_index),
               ),
               IconButton(
                 color: Colors.green,
@@ -41,7 +41,7 @@ class DeleteTransaction extends StatelessWidget {
                   Icons.cancel,
                   size: 30.0,
                 ),
-                onPressed: () => _deleteHandler(-1),
+                onPressed: () => _deleteHandler(context,-1),
               )
             ],
           )
