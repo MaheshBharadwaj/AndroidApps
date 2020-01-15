@@ -127,6 +127,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   void _deleteHandler(BuildContext context, int index) async {
     if (index != -1) {
+    
       await deleteTransaction(index);
       loadTransactionsList().then((tList) {
         setState(() {
