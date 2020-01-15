@@ -17,11 +17,15 @@ class MyTransaction {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'id': "$id",
       'title': title,
-      'amount': amount,
-      'date_t': date,
+      'amount': amount.toString(),
+      'date_t': date.millisecondsSinceEpoch.toString(),
     };
+  }
+
+  String toString(){
+    return "Title: $title,ID: $id";
   }
 }
 

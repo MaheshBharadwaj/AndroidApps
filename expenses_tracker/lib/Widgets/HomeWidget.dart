@@ -19,27 +19,30 @@ class _HomeWidgetState extends State<HomeWidget> {
   List<MyTransaction> _transactionList = [];
   List<MyTransaction> _recentTransactionsList = [];
 
+  _HomeWidgetState() {
+    loadTransactionsList().then((tList) {
+      setState(() {
+        _transactionList = tList;
+      });
+      loadRecentTransactionsList().then((rtList) {
+        _recentTransactionsList = rtList;
+        setState(() {
+          _recentTransactionsList = rtList;
+        });
+      });
+    });
+  }
+
   Future<Database> getDatabase(String path) async {
     Database db =
         await openDatabase(path, onCreate: (Database db, int version) async {
       await db.execute('''create table Transactions(
             id TEXT PRIMARY KEY,
             title TEXT,
-            amount NUMBER,
-            date_t DATE)''');
-    },
-    version: 1);
+            amount TEXT,
+            date_t TEXT)''');
+    }, version: 1);
     return db;
-  }
-
-  void loadTransaction(){
-    getTransactionsList().then((tList){
-      _transactionList = tList;
-    });
-  }
-
-  void loadRecentTransaction(){
-    getRecentTransactionsList().then((rtList){_recentTransactionsList = rtList;});
   }
 
   Future<void> insertTransaction(final MyTransaction T) async {
@@ -54,7 +57,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
-  Future<List<MyTransaction>> getTransactionsList() async {
+  Future<List<MyTransaction>> loadTransactionsList() async {
     // Get a reference to the database.
     final String path = join(await getDatabasesPath(), 'Transacitions.db');
     final Database db = await getDatabase(path);
@@ -65,11 +68,11 @@ class _HomeWidgetState extends State<HomeWidget> {
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
       return MyTransaction(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        amount: (maps[i]['amount'] as double),
-        date: (maps[i]['date_t'] as DateTime),
-      );
+          id: maps[i]['id'],
+          title: maps[i]['title'],
+          amount: double.parse(maps[i]['amount'] as String),
+          date: DateTime.fromMillisecondsSinceEpoch(
+              int.parse(maps[i]['date_t'] as String)));
     });
   }
 
@@ -81,25 +84,19 @@ class _HomeWidgetState extends State<HomeWidget> {
     await db.delete(
       'Transactions',
       where: "id = ?",
-      whereArgs: [id],
+      whereArgs: ["${_transactionList[id].id}"],
     );
   }
 
-  
-  Future<List<MyTransaction>>  getRecentTransactionsList() async{
-    final tList = await getTransactionsList();
-    
-    _recentTransactionsList = tList.where((tx) {
+  Future<List<MyTransaction>> loadRecentTransactionsList() async {
+    return _transactionList.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
           Duration(days: 7),
         ),
       );
     }).toList();
-
-    return _recentTransactionsList;
   }
-  
 
   void _showDeleteModalSheet(BuildContext context, int index) {
     showModalBottomSheet(
@@ -127,47 +124,42 @@ class _HomeWidgetState extends State<HomeWidget> {
       },
     );
   }
-  /*
-  void _deleteHandler(BuildContext context, int index) {
-    if (index != -1)
-      setState(() {
-        _transactionList.removeAt(index);
-      });
-    Navigator.of(context).pop();
-  }
-  */
 
   void _deleteHandler(BuildContext context, int index) async {
-    if (index != -1){
+    if (index != -1) {
       await deleteTransaction(index);
-      setState(() {
-        _transactionList.removeAt(index);
+      loadTransactionsList().then((tList) {
+        setState(() {
+          _transactionList = tList;
+        });
+        loadRecentTransactionsList().then((rtList) {
+          _recentTransactionsList = rtList;
+          setState(() {
+            _recentTransactionsList = rtList;
+          });
+        });
       });
     }
+    print(_transactionList.toString());
     Navigator.of(context).pop();
   }
 
-  /*
-  void _addHandler(BuildContex context,String title, String amount, DateTime date) {
-    if (date == null) return;
-
-    Navigator.of(context).pop();
-
-    if (title == '' || amount == '') return;
+  Future<void> _deleteAllHandler() async {
+    final String path = join(await getDatabasesPath(), 'Transacitions.db');
+    final Database db = await getDatabase(path);
+    await db.delete('Transactions');
 
     setState(() {
-      _transactionList.add(MyTransaction(
-        amount: double.parse(amount),
-        date: date,
-        id: 'T${_transactionList.length}',
-        title: title,
-      ));
+      loadTransactionsList().then((tList) {
+        _transactionList = tList;
+        loadRecentTransactionsList().then((rtList) {
+          _recentTransactionsList = rtList;
+        });
+      });
     });
-
-    //Close the modal sheets
   }
-  */
-  void _addHandler (
+
+  void _addHandler(
       BuildContext context, String title, String amount, DateTime date) async {
     if (date == null) return;
 
@@ -177,17 +169,19 @@ class _HomeWidgetState extends State<HomeWidget> {
     await insertTransaction(MyTransaction(
       amount: double.parse(amount),
       date: date,
-      id: 'T${_transactionList.length}',
+      id: '${_transactionList.length}',
       title: title,
     ));
-    
-    setState(() {
-      _transactionList.add(MyTransaction(
-        amount: double.parse(amount),
-        date: date,
-        id: 'T${_transactionList.length}',
-        title: title,
-      ));
+    loadTransactionsList().then((tList) {
+      setState(() {
+        _transactionList = tList;
+      });
+      loadRecentTransactionsList().then((rtList) {
+        _recentTransactionsList = rtList;
+        setState(() {
+          _recentTransactionsList = rtList;
+        });
+      });
     });
 
     //Close the modal sheets
@@ -195,13 +189,14 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //loadTransaction();
-    //loadRecentTransaction();
     final appBar = AppBar(
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _showAddModalSheet(context),
+          icon: Icon(
+            Icons.clear,
+            color: Colors.white,
+          ),
+          onPressed: () => _deleteAllHandler(),
           iconSize: 35.0,
         )
       ],
