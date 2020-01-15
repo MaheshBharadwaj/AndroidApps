@@ -68,6 +68,12 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
+  void _deleteAllHandler() {
+    setState(() {
+      _transactionList.removeRange(0,_transactionList.length);
+    });
+  }
+
   void _deleteHandler(int index) {
     if (index != -1)
       setState(() {
@@ -100,9 +106,12 @@ class _HomeWidgetState extends State<HomeWidget> {
     final appBar = AppBar(
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _showAddModalSheet(context),
-          iconSize: 35.0,
+          icon: Icon(
+            Icons.refresh,
+            size: 30,
+            color: Colors.white,
+          ),
+          onPressed: () => _deleteAllHandler(),
         )
       ],
       centerTitle: true,
