@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../Models/Transaction.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> _transactionList;
+  final List<MyTransaction> _transactionList;
   final Function _showDeleteModalSheet;
 
   TransactionList(this._transactionList, this._showDeleteModalSheet);

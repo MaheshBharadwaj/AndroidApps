@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 import './Widgets/HomeWidget.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  );
+  runApp(MyApp());
+}
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -35,10 +41,7 @@ class MyApp extends StatelessWidget {
             color: Colors.white70,
           ),
           button: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold
-          ),
+              color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold),
           title: TextStyle(
             color: Colors.white,
             fontSize: 22.5,
