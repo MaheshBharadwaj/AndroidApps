@@ -62,10 +62,9 @@ class _HomeWidgetState extends State<HomeWidget> {
     final String path = join(await getDatabasesPath(), 'Transacitions.db');
     final Database db = await getDatabase(path);
 
-    // Query the table for all The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('Transactions');
+    final List<Map<String, dynamic>> maps =
+        await db.rawQuery('Select * from Transactions order by date_t desc');
 
-    // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
       return MyTransaction(
           id: maps[i]['id'],
@@ -127,7 +126,6 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   void _deleteHandler(BuildContext context, int index) async {
     if (index != -1) {
-    
       await deleteTransaction(index);
       loadTransactionsList().then((tList) {
         setState(() {
@@ -211,47 +209,49 @@ class _HomeWidgetState extends State<HomeWidget> {
     return Scaffold(
       appBar: appBar,
       backgroundColor: Theme.of(context).primaryColor,
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.vertical) *
-                  0.27,
-              child: Chart(_recentTransactionsList),
-            ),
-            (_transactionList.isEmpty)
-                ? Column(
-                    children: <Widget>[
-                      Container(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.vertical) *
-                            0.65,
-                        padding: EdgeInsets.all(10.0),
-                        child: Center(
-                          child: Image.asset(
-                            'assets/images/waiting.png',
-                            fit: BoxFit.contain,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.vertical) *
+                    0.27,
+                child: Chart(_recentTransactionsList),
+              ),
+              (_transactionList.isEmpty)
+                  ? Column(
+                      children: <Widget>[
+                        Container(
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.vertical) *
+                              0.65,
+                          padding: EdgeInsets.all(10.0),
+                          child: Center(
+                            child: Image.asset(
+                              'assets/images/waiting.png',
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        'No Transactions to Show',
-                        style: Theme.of(context).primaryTextTheme.body1,
-                      ),
-                    ],
-                  )
-                : Container(
-                    height: (MediaQuery.of(context).size.height -
-                            appBar.preferredSize.height -
-                            MediaQuery.of(context).padding.vertical) *
-                        0.73,
-                    child: TransactionList(
-                        _transactionList, _showDeleteModalSheet),
-                  ),
-          ],
+                        Text(
+                          'No Transactions to Show',
+                          style: Theme.of(context).primaryTextTheme.body1,
+                        ),
+                      ],
+                    )
+                  : Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.vertical) *
+                          0.73,
+                      child: TransactionList(
+                          _transactionList, _showDeleteModalSheet),
+                    ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

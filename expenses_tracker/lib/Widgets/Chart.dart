@@ -35,6 +35,7 @@ class Chart extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.all(5.0),
       decoration: BoxDecoration(
         color: Colors.white10,
@@ -44,12 +45,16 @@ class Chart extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           ...groupedTransactionValues.map((data) {
-            return ChartBar(
-                data['day'].toString().substring(0, 1),
-                (data['amount'] as double),
-                totalSpending == 0.0
-                    ? 0.0
-                    : (data['amount'] as double) / totalSpending);
+            return Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ChartBar(
+                  data['day'].toString().substring(0, 1),
+                  (data['amount'] as double),
+                  totalSpending == 0.0
+                      ? 0.0
+                      : (data['amount'] as double) / totalSpending),
+            );
           }).toList()
         ],
       ),
